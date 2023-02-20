@@ -62,7 +62,8 @@ public:
         NoiseType_Cellular,
         NoiseType_Perlin,
         NoiseType_ValueCubic,
-        NoiseType_Value
+        NoiseType_Value,
+        NoiseType_White
     };
 
     enum RotationType3D
@@ -630,6 +631,8 @@ private:
             return SingleValueCubic(seed, x, y);
         case NoiseType_Value:
             return SingleValue(seed, x, y);
+        case NoiseType_White:
+            return SingleWhite(seed, x, y);
         default:
             return 0;
         }
@@ -652,6 +655,8 @@ private:
             return SingleValueCubic(seed, x, y, z);
         case NoiseType_Value:
             return SingleValue(seed, x, y, z);
+        case NoiseType_White:
+            return SingleWhite(seed, x, y, z);
         default:
             return 0;
         }
@@ -1912,6 +1917,27 @@ private:
                 CubicLerp(ValCoord(seed, x0, y3, z3), ValCoord(seed, x1, y3, z3), ValCoord(seed, x2, y3, z3), ValCoord(seed, x3, y3, z3), xs),
                 ys),
             zs) * (1 / (1.5f * 1.5f * 1.5f));
+    }
+
+    // White Noise
+
+    template <typename FNfloat>
+    float SingleWhite(int seed, FNfloat x, FNfloat y) const
+    {
+        int x0 = FastFloor(x) * PrimeX;
+        int y0 = FastFloor(y) * PrimeY;
+        return ValCoord(seed, x0, y0);
+
+    }
+
+    template <typename FNfloat>
+    float SingleWhite(int seed, FNfloat x, FNfloat y, FNfloat z) const
+    {
+        int x0 = FastFloor(x) * PrimeX;
+        int y0 = FastFloor(y) * PrimeY;
+        int z0 = FastFloor(z) * PrimeZ;
+        return ValCoord(seed, x0, y0, z0);
+
     }
 
 
